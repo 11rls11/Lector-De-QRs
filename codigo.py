@@ -19,18 +19,17 @@ def process_qr_image(img_path) :
     img1=cv.imread(img_path + ".jpg")
     gray=cv.cvtColor(img1,cv.COLOR_BGR2GRAY) #convertir imagen a escala de grises
 
-    _, mask = cv.threshold(gray, 100, 255, cv.THRESH_BINARY) #aplicar mascara pero binaria
-
+    _, mask = cv.threshold(gray, 120, 255, cv.THRESH_BINARY) #aplicar mascara pero binaria
     #aplicar blur para difuminar aspectos extras
     mask_blur = cv.GaussianBlur(mask, (3,3), 0)
 
     #aplicar erosion y dilatación para resaltar bien las lineas del qr
     kernel = np.ones((5,5), np.uint8)
     mask_erode = cv.erode(mask_blur, kernel, iterations=1)   # Erosión
-    mask_dilate = cv.dilate(mask_erode, kernel, iterations=2) # Dilatación
+    mask_dilate = cv.dilate(mask_erode, kernel, iterations=1) # Dilatación
 
     #invertir colores de la imagen procesada
-    thresh = cv.bitwise_not(mask_dilate)
+    thresh = mask_dilate
     cv.imwrite(img_path + "_filtrado" + ".jpg", thresh)
     print("Imagen guardada :D")
     return 0
