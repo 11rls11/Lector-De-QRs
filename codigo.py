@@ -76,6 +76,7 @@ def read_qr_image(img_path) :
             framed_qr = cv.putText(framed_qr, s, p[0].astype(int), cv.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2, cv.LINE_AA)
         #Guardamos el QR sobreescribiendo el contenido de la imagen procesada
         cv.imwrite(img_path + "_filtrado" + ".jpg", processed_img)
+        print("Código QR detectado, información guardada en la imágen original")
     else :
         print("No se detectó ningún código QR")
 
@@ -123,5 +124,7 @@ def main() : #menu p
             proccess_qr_from_video()
             cv.destroyWindow(WINDOW_NAME)
             break
+        else:
+            print("Introduce una opción válida")
 
 main()
