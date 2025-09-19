@@ -8,7 +8,7 @@ CAMERA_ID = 0 #Id de la cámara, la del equipo es 0, por que es solo una cámara
 DELAY = 1 #Delay de la cámara
 WINDOW_NAME = "Lector de QR's"
 QR_D = cv.QRCodeDetector() #Inializa la detección de QR's
-CAP = cv.VideoCapture(CAMERA_ID) #Inicializa la fuente de video
+CAP = cv.VideoCapture(CAMERA_ID, cv.CAP_V4L2) #Inicializa la fuente de video
 
 #imagenes a procesar
 def process_qr_image(img_path) :
@@ -106,13 +106,22 @@ def proccess_qr_from_video() :
         if cv.waitKey(DELAY) & 0xFF == ord('q'):
             break
 
-def main() : #menu principal
-    print("Introduce que imagen quieres ")
-    ruta=input().strip()
-    accion = process_qr_image(ruta)
-    if (accion == 0) :
-        read_qr_image(ruta)
-        proccess_qr_from_video()
-        cv.destroyWindow(WINDOW_NAME)
+def main() : #menu p
+    while True:
+        print("Introduce 1 para leer el QR de una imágen o 2 para leer los que estén en la cámara: ")
+        accion = input().strip()
+        if (accion == '1') :
+            print("Introduce el nombre de la imagen que quieras procesar: ")
+            ruta = input().strip()
+            procesar_ruta = process_qr_image(ruta)
+            if (procesar_ruta == 0) :
+                read_qr_image(ruta)
+            else :
+                print("No se pudo procesar tú imagen. Intenta de nuevo")
+                break
+        elif (accion == '2'):
+            proccess_qr_from_video()
+            cv.destroyWindow(WINDOW_NAME)
+            break
 
 main()
